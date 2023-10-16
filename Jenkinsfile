@@ -4,7 +4,6 @@ pipeline {
     stages {
         stage('Checkout from GitHub (Test)') {
             steps {
-                // Check out your code from the "test" branch on GitHub.
                 script {
                     def scmVars = checkout([
                         $class: 'GitSCM',
@@ -14,35 +13,19 @@ pipeline {
                             [$class: 'CloneOption', noTags: false, reference: '', shallow: false],
                             [$class: 'CleanBeforeCheckout'],
                         ],
-                        userRemoteConfigs: [[url: 'https://github.com/Timodo22/pijplijn.git']]
+                        userRemoteConfigs: [[url: 'https://github.com/NielsieT/Ubuntu-Jenkins.git']]
                     ])
                 }
             }
         }
 
-        stage('Deploy to Dev Server') {
-            steps {
-                // Copy HTML files from the "test" branch to the test server.
-                sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Multipipeline_test/index.html student@192.168.1.18:/var/www/html/'
-            }
-        }
-
-        stage('Confirmation Dev') {
-            steps {
-                // Prompt for confirmation before proceeding.
-                input(id: 'confirmDeployment', message: 'Review the test environment. If everything looks good, approve for Development.', ok: 'Deploy')
-            }
-        }
-
-
         stage('Deploy to test') {
             steps {
-                sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Multipipeline_test/index.html student@192.168.1.23:/var/www/html/'
+                sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/multibranchpipeline/index.html student@192.168.29.63:/var/www/html/'
             }
         }
                 stage('Confirmation test server') {
             steps {
-                // Prompt for confirmation before proceeding.
                 input(id: 'confirmDeployment', message: 'Review the test environment. If everything looks good, approve for Development.', ok: 'Deploy')
             }
         }
@@ -50,7 +33,7 @@ pipeline {
 
         stage('Deploy to main Server') {
             steps {
-                sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Multipipeline_test/index.html student@192.168.1.25:/var/www/html/'
+                sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/multibranchpipeline/index.html student@192.168.29.64:/var/www/html/'
             }
         }
     }
