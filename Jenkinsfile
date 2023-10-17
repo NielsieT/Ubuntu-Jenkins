@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout from GitHub (Test)') {
+        stage('Check GitHub') {
             steps {
                 script {
                     def scmVars = checkout([
@@ -18,20 +18,17 @@ pipeline {
                 }
             }
         }
-
         stage('Deploy to test') {
             steps {
                 sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/multibranchpipeline_test/index.html student@192.168.29.63:/var/www/html/'
             }
         }
-                stage('Confirmation test server') {
+                stage('Confirm test server') {
             steps {
-                input(id: 'confirmDeployment', message: 'Review the test environment. If everything looks good, approve for Development.', ok: 'Deploy')
+                input(id: 'confirmDeployment', message: 'Check test server. approve the Development?', ok: 'Deploy')
             }
         }
-
-
-        stage('Deploy to main Server') {
+        stage('Deploy to Product') {
             steps {
                 sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/multibranchpipeline_test/index.html student@192.168.29.64:/var/www/html/'
             }
