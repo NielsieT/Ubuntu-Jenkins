@@ -18,17 +18,17 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to test') {
+        stage('Deploy testsrv') {
             steps {
                 sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/multibranchpipeline_test/index.html student@192.168.29.63:/var/www/html/'
             }
         }
-                stage('Confirm test server') {
+                stage('accept test server') {
             steps {
-                input(id: 'confirmDeployment', message: 'Check test server. approve the Development?', ok: 'Deploy')
+                input(id: 'acceptDeployment', message: 'Check test server.', ok: 'Accept')
             }
         }
-        stage('Deploy to Product') {
+        stage('Deploy Productiesrv') {
             steps {
                 sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/multibranchpipeline_test/index.html student@192.168.29.64:/var/www/html/'
             }
