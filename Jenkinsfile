@@ -12,8 +12,8 @@ pipeline {
                         extensions: [
                             [$class: 'CleanBeforeCheckout'],
                             [$class: 'CloneOption', noTags: false, reference: '', shallow: false],
-                        userRemoteConfigs: [[url: 'https://github.com/NielsieT/Ubuntu-Jenkins.git']]
                         ],
+                        userRemoteConfigs: [[url: 'https://github.com/NielsieT/Ubuntu-Jenkins.git']]
                     ])
                 }
             }
