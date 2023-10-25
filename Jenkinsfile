@@ -8,11 +8,11 @@ pipeline {
                     def scmVars = checkout([
                         $class: 'GitSCM',
                         branches: [[name: 'test']],
-                        userRemoteConfigs: [[url: 'https://github.com/NielsieT/Ubuntu-Jenkins.git']]
                         doGenerateSubmoduleConfigurations: false,
                         extensions: [
                             [$class: 'CleanBeforeCheckout'],
                             [$class: 'CloneOption', noTags: false, reference: '', shallow: false],
+                        userRemoteConfigs: [[url: 'https://github.com/NielsieT/Ubuntu-Jenkins.git']]
                         ],
                     ])
                 }
