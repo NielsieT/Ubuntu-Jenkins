@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Check GitHub') {
+        stage('GitHub Config') {
             steps {
                 script {
                     def scmVars = checkout([
@@ -10,25 +10,25 @@ pipeline {
                         branches: [[name: 'test']],
                         doGenerateSubmoduleConfigurations: false,
                         extensions: [
-                            [$class: 'CloneOption', noTags: false, reference: '', shallow: false],
                             [$class: 'CleanBeforeCheckout'],
+                            [$class: 'CloneOption', noTags: false, reference: '', shallow: false],
                         ],
                         userRemoteConfigs: [[url: 'https://github.com/NielsieT/Ubuntu-Jenkins.git']]
                     ])
                 }
             }
         }
-        stage('Deploy to test') {
+        stage('Deploy Testsrv') {
             steps {
                 sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/multibranchpipeline_test/index.html student@192.168.29.63:/var/www/html/'
             }
         }
-                stage('Confirm test server') {
+                stage('Accept Testsrv') {
             steps {
-                input(id: 'confirmDeployment', message: 'Check test server. approve the Development?', ok: 'Deploy')
+                input(id: 'acceptDeployment', message: 'Check test server', ok: 'Accept')
             }
         }
-        stage('Deploy to Product') {
+        stage('Deploy Productiesrv') {
             steps {
                 sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/multibranchpipeline_test/index.html student@192.168.29.64:/var/www/html/'
             }
